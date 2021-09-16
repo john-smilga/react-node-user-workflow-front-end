@@ -25,6 +25,7 @@ const VerifyPage = () => {
   };
 
   useEffect(() => {
+    console.log('verify token page called');
     verifyToken();
   }, []);
 
