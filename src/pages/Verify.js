@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useGlobalContext } from '../context';
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -9,6 +10,7 @@ function useQuery() {
 const VerifyPage = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { isLoading } = useGlobalContext();
   const query = useQuery();
 
   const verifyToken = async () => {
@@ -25,8 +27,9 @@ const VerifyPage = () => {
   };
 
   useEffect(() => {
-    console.log('verify token page called');
-    verifyToken();
+    if (!isLoading) {
+      verifyToken();
+    }
   }, []);
 
   if (loading) {
