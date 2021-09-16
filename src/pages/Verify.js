@@ -28,9 +28,7 @@ const VerifyPage = () => {
   };
 
   useEffect(() => {
-    console.log(`verify value :${verify}`);
     if (!verify) {
-      console.log('verify token called');
       verifyToken();
     }
   }, []);

@@ -39,9 +39,7 @@ function Register() {
     }
     setLoading(false);
   };
-  useEffect(() => {
-    console.log('register page called');
-  }, []);
+
   return (
     <>
       <Wrapper className='page'>
