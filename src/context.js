@@ -5,6 +5,7 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [verify, setVerify] = useState(false);
 
   const saveUser = (user) => {
     setUser(user);
@@ -49,6 +50,8 @@ const AppProvider = ({ children }) => {
         saveUser,
         user,
         logoutUser,
+        verify,
+        setVerify,
       }}
     >
       {children}
