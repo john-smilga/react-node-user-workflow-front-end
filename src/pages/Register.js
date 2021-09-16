@@ -29,6 +29,7 @@ function Register() {
         `/api/v1/auth/register`,
         registerNewUser
       );
+      console.log(data);
       setRegisterSuccess(true);
       setValues({ name: '', email: '', password: '' });
       setAlert({ show: true, text: data.msg, type: 'success' });
