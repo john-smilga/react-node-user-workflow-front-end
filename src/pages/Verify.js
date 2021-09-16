@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useGlobalContext } from '../context';
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -10,7 +9,7 @@ function useQuery() {
 const VerifyPage = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { isLoading } = useGlobalContext();
+  const [success, setSuccess] = useState(false);
   const query = useQuery();
 
   const verifyToken = async () => {
@@ -19,6 +18,7 @@ const VerifyPage = () => {
       const { data } = await axios.post('/api/v1/auth/verify-email', {
         verificationToken: query.get('token'),
       });
+      setSuccess(true);
     } catch (error) {
       // console.log(error.response);
       setError(true);
@@ -27,7 +27,8 @@ const VerifyPage = () => {
   };
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!success) {
+      console.log('verify token called');
       verifyToken();
     }
   }, []);
