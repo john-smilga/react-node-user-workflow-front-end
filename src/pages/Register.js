@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import FormRow from '../components/FormRow';
@@ -39,7 +39,9 @@ function Register() {
     }
     setLoading(false);
   };
-
+  useEffect(() => {
+    console.log('register page called');
+  }, []);
   return (
     <>
       <Wrapper className='page'>
