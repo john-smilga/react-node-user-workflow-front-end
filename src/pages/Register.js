@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import FormRow from '../components/FormRow';
 import axios from 'axios';
-import { useGlobalContext } from '../context';
+import useLocalState from '../utils/localState';
+
 function Register() {
   const [values, setValues] = useState({
     name: '',
@@ -11,15 +12,22 @@ function Register() {
     password: '',
   });
 
-  const [alert, setAlert] = useState({ show: false, text: '', type: 'danger' });
-  const [loading, setLoading] = useState(false);
-  const [registerSuccess, setRegisterSuccess] = useState(false);
+  const {
+    alert,
+    showAlert,
+    loading,
+    setLoading,
+    success,
+    setSuccess,
+    hideAlert,
+  } = useLocalState();
+
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   const onSubmit = async (e) => {
     e.preventDefault();
-    setAlert({ show: false, text: '', type: 'danger' });
+    hideAlert();
     setLoading(true);
     const { name, email, password } = values;
     const registerNewUser = { name, email, password };
@@ -29,13 +37,13 @@ function Register() {
         `/api/v1/auth/register`,
         registerNewUser
       );
-      console.log(data);
-      setRegisterSuccess(true);
+
+      setSuccess(true);
       setValues({ name: '', email: '', password: '' });
-      setAlert({ show: true, text: data.msg, type: 'success' });
+      showAlert({ text: data.msg, type: 'success' });
     } catch (error) {
       const { msg } = error.response.data;
-      setAlert({ show: true, text: msg, type: 'danger' });
+      showAlert({ text: msg });
     }
     setLoading(false);
   };
@@ -46,8 +54,11 @@ function Register() {
         {alert.show && (
           <div className={`alert alert-${alert.type}`}>{alert.text}</div>
         )}
-        {!registerSuccess && (
-          <form className='form' onSubmit={onSubmit}>
+        {!success && (
+          <form
+            className={loading ? 'form form-loading' : 'form'}
+            onSubmit={onSubmit}
+          >
             {/* single form row */}
 
             <FormRow
@@ -77,9 +88,9 @@ function Register() {
               {loading ? 'Loading...' : 'Register'}
             </button>
             <p>
-              Already a Member?
+              Already a have an account?
               <Link to='/login' className='login-link'>
-                login
+                Log In
               </Link>
             </p>
           </form>

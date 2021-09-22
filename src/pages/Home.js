@@ -11,7 +11,8 @@ function Home() {
       <Wrapper className='page'>
         <div className='info'>
           <h2>
-            User <span>Workflow</span>
+            <span>Auth</span>
+            Workflow
           </h2>
           <p>
             I'm baby viral enamel pin chartreuse cliche retro af selfies kinfolk

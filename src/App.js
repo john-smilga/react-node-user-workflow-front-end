@@ -7,6 +7,8 @@ import {
   Verify,
   Dashboard,
   ProtectedRoute,
+  ForgotPassword,
+  ResetPassword,
 } from './pages';
 import Navbar from './components/Navbar';
 import { useGlobalContext } from './context';
@@ -32,12 +34,18 @@ function App() {
         <Route path='/register' exact>
           <Register />
         </Route>
-        <Route path='/user/verify-email' exact>
-          <Verify />
-        </Route>
         <ProtectedRoute path='/dashboard' exact>
           <Dashboard />
         </ProtectedRoute>
+        <Route path='/forgot-password' exact>
+          <ForgotPassword />
+        </Route>
+        <Route path='/user/verify-email' exact>
+          <Verify />
+        </Route>
+        <Route path='/user/reset-password' exact>
+          <ResetPassword />
+        </Route>
         <Route path='*'>
           <Error />
         </Route>

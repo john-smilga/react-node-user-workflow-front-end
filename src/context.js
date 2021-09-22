@@ -1,27 +1,22 @@
 import axios from 'axios';
 import React, { useContext, useState, useEffect } from 'react';
+import url from './utils/url';
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const [verify, setVerify] = useState(false);
-
   const saveUser = (user) => {
     setUser(user);
-    localStorage.setItem('user', JSON.stringify(user));
   };
 
   const removeUser = () => {
     setUser(null);
-    localStorage.removeItem('user');
   };
 
   const fetchUser = async () => {
-    setIsLoading(true);
-
     try {
-      const { data } = await axios.get('/api/v1/users/showMe');
+      const { data } = await axios.get(`/api/v1/users/showMe`);
       saveUser(data.user);
     } catch (error) {
       removeUser();
@@ -46,12 +41,9 @@ const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         isLoading,
-        setIsLoading,
         saveUser,
         user,
         logoutUser,
-        verify,
-        setVerify,
       }}
     >
       {children}

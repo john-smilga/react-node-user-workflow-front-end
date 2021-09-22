@@ -16,7 +16,7 @@ const Navbar = () => {
           <div className='nav-links'>
             <p>hello, {user.name}</p>
             <button
-              className='btn'
+              className='btn btn-small'
               onClick={() => {
                 logoutUser();
               }}

@@ -1,1 +1,3 @@
-export default 'http://localhost:5000/api/v1'
+const url = 'http://localhost:5000';
+
+export default url;

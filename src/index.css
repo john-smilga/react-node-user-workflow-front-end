@@ -161,7 +161,13 @@ ul {
 .btn-block {
   width: 100%;
 }
-
+.btn-small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+.btn:disabled {
+  cursor: not-allowed;
+}
 /* alerts */
 .alert {
   padding: 0.375rem 0.75rem;
@@ -192,6 +198,7 @@ ul {
   box-shadow: var(--shadow-2);
   padding: 2rem 2.5rem;
   margin: 3rem auto;
+  position: relative;
 }
 .form-label {
   display: block;
@@ -269,4 +276,15 @@ ul {
   min-height: 100vh;
   display: grid;
   place-items: center;
+}
+.form-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--borderRadius);
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  cursor: not-allowed;
 }

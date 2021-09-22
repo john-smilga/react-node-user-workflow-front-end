@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Link, useHistory, Redirect } from 'react-router-dom';
 import FormRow from '../components/FormRow';
 import { useGlobalContext } from '../context';
+import useLocalState from '../utils/localState';
+
 import axios from 'axios';
 
 function Login() {
@@ -12,21 +14,21 @@ function Login() {
     email: '',
     password: '',
   });
-  const [loading, setLoading] = useState(false);
-  const [alert, setAlert] = useState({ show: false, text: '', type: 'danger' });
+  const { alert, showAlert, loading, setLoading, hideAlert } = useLocalState();
+
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   const onSubmit = async (e) => {
     e.preventDefault();
+    hideAlert();
     setLoading(true);
     const { email, password } = values;
     const loginUser = { email, password };
     try {
       const { data } = await axios.post(`/api/v1/auth/login`, loginUser);
       setValues({ name: '', email: '', password: '' });
-      setAlert({
-        show: true,
+      showAlert({
         text: `Welcome, ${data.user.name}. Redirecting to dashboard...`,
         type: 'success',
       });
@@ -34,7 +36,7 @@ function Login() {
       saveUser(data.user);
       history.push('/dashboard');
     } catch (error) {
-      setAlert({ show: true, text: error.response.data.msg, type: 'danger' });
+      showAlert({ text: error.response.data.msg });
       setLoading(false);
     }
   };
@@ -45,7 +47,10 @@ function Login() {
         {alert.show && (
           <div className={`alert alert-${alert.type}`}>{alert.text}</div>
         )}
-        <form className='form' onSubmit={onSubmit}>
+        <form
+          className={loading ? 'form form-loading' : 'form'}
+          onSubmit={onSubmit}
+        >
           {/* single form row */}
           <FormRow
             type='email'
@@ -66,9 +71,15 @@ function Login() {
             {loading ? 'Loading...' : 'Login'}
           </button>
           <p>
-            Not a Member Yet?
+            Don't have an account?
             <Link to='/register' className='register-link'>
-              register
+              Register
+            </Link>
+          </p>
+          <p>
+            Forgot your password?{' '}
+            <Link to='/forgot-password' className='reset-link'>
+              Reset Password
             </Link>
           </p>
         </form>
@@ -86,15 +97,21 @@ const Wrapper = styled.section`
   }
   p {
     margin: 0;
-    margin-top: 1rem;
     text-align: center;
   }
-  .register-link {
+  .btn {
+    margin-bottom: 1.5rem;
+  }
+  .register-link,
+  .reset-link {
     display: inline-block;
     margin-left: 0.25rem;
     text-transform: capitalize;
     color: var(--primary-500);
     cursor: pointer;
+  }
+  .reset-link {
+    margin-top: 0.25rem;
   }
   .btn:disabled {
     cursor: not-allowed;
